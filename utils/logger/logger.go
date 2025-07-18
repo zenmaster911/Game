@@ -22,5 +22,6 @@ func SetupLogger(env string) *slog.Logger {
 	case envProd:
 		log = slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
 	}
+
 	return log
 }
