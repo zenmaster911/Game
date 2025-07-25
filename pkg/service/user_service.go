@@ -9,14 +9,14 @@ import (
 )
 
 type UserService struct {
-	repo *repository.UerRepository
+	repo repository.Authorization
 }
 
-func NewUserService(repo *repository.UerRepository) *UserService {
+func NewUserService(repo repository.Authorization) *UserService {
 	return &UserService{repo: repo}
 }
 
-func (s *UserService) SignUp(input *model.CreateUser) (*model.User, error) {
+func (s *UserService) Create(input *model.CreateUser) (*model.User, error) {
 	_, err := s.repo.GetByUsername(input.Username)
 	if err == nil {
 		return nil, errors.New("user with this name already exists")
