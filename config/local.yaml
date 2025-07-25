@@ -1,9 +1,12 @@
 # config/local.yaml
 
-env: "local"
-storage_path: "./storage/storage.db"
-http_server: 
-  address: "localhost:8082"
-  timeout: 5s
-  idle_timeout: 60s
+app:
+  port: "8080"
 
+db:
+  host: "localhost"
+  port: "5432"
+  username: "postgres"
+  password: "-"
+  dbname: "postgres"
+  sslmode: "disable"

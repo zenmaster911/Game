@@ -1,25 +1,24 @@
 package db
 
 import (
-	"database/sql"
 	"fmt"
 
-	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
+	"github.com/zenmaster911/Game/internal/config"
 )
 
-type Config struct {
-	Host     string
-	Port     string
-	Username string
-	Password string
-	DBName   string
-	SSLMode  string
-}
+// type Config struct {
+// 	Host     string
+// 	Port     string
+// 	Username string
+// 	Password string
+// 	DBName   string
+// 	SSLMode  string
+// }
 
-func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
-	sqlDriver := stdlib.GetDefaultDriver()
-	sql.Register("pgx", sqlDriver)
+func NewPostgresDB(cfg *config.DBConfig) (*sqlx.DB, error) {
+	// sqlDriver := stdlib.GetDefaultDriver()
+	// sql.Register("pgx", sqlDriver)
 
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cfg.Host, cfg.Port, cfg.Username, cfg.Password, cfg.DBName, cfg.SSLMode)

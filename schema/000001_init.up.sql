@@ -33,9 +33,9 @@
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL unique,
         description TEXT,
-        skill_type VARCHAR(255) --passive,active
+        skill_type VARCHAR(255), --passive,active
         effect JSONB,
-        required_level int DEFAULT 1
+        required_level int DEFAULT 1,
         required_class class_requirement DEFAULT 'any'
     );
 
@@ -46,4 +46,45 @@
         level INT DEFAULT 1,
         exp INT DEFAULT 0,
         PRIMARY KEY(character_id,skill_id)
-    )
+    );
+
+    CREATE TABLE items
+    (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL unique,
+        price INT DEFAULT 1,
+        enchantment_level INT DEFAULT 0,
+        description TEXT,
+        rarity VARCHAR(20) DEFAULT 'common', --COMMON,RARE,EPIC,LEGENDARY,SECRET
+        effect JSONB,
+        required_level INT DEFAULT 1,
+        required_class class_requirement DEFAULT 'any',
+        required_strength INT DEFAULT 5,
+        required_agility INT DEFAULT 5,
+        required_intellegence INT DEFAULT 5,
+        required_charisma INT DEFAULT 5
+    );
+
+    CREATE TABLE character_inventory
+    (
+        character_id INT REFERENCES characters(id) ON DELETE CASCADE,
+        item_id INT REFERENCES items(id) ON DELETE CASCADE,
+        quantity INT DEFAULT 1,
+        equipped BOOLEAN DEFAULT FALSE,
+        PRIMARY KEY (character_id, item_id)
+    );
+
+    CREATE TABLE monsters
+    (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL UNIQUE,
+        lvl INT DEFAULT 1,
+        hp INT DEFAULT  20,
+        damage INT DEFAULT 1,
+        skills INT REFERENCES skills(id) ON DELETE CASCADE,
+        reward_items INT REFERENCES items(id) ON DELETE CASCADE,
+        reward_gold INT DEFAULT 1,
+        reward_exp INT DEFAULT 10
+    );
+
+ 
