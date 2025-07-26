@@ -22,17 +22,14 @@ func (r *UserRepository) Create(user *model.User) error {
 	return err
 }
 
-func (r *UserRepository) GetByUsername(username string) (*model.User, error) {
+func (r *UserRepository) GetByUsername(username string) (model.User, error) {
 	var user model.User
 	err := r.db.Get(&user, "SELECT * FROM users WHERE username=$1", username)
-	if err != nil {
-		return nil, err
-	}
-	return &user, nil
-}
-
-func (r *UserRepository) GetUser(username, password string) (model.User, error) {
-	var user model.User
-	err := r.db.Get(&user, "SELECT id FROM users WHERE username=$1 AND password_hash=$2", username, password)
 	return user, err
 }
+
+// func (r *UserRepository) GetUser(username, password string) (model.User, error) {
+// 	var user model.User
+// 	err := r.db.Get(&user, "SELECT id FROM users WHERE username=$1 AND password_hash=$2", username, password)
+// 	return user, err
+// }

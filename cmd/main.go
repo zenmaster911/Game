@@ -3,11 +3,8 @@ package main
 import (
 	"log"
 	"log/slog"
-	"net/http"
 	"os"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	_ "github.com/jackc/pgx/stdlib"
 	"github.com/zenmaster911/Game/internal/config"
 	"github.com/zenmaster911/Game/internal/db"
@@ -46,21 +43,17 @@ func main() {
 	}
 	defer dbConn.Close()
 
-	userRepo := repository.NewUserRepository(dbConn)
-	UserService := service.NewUserService(userRepo)
-	userHandler := handler.NewUserHandler(UserService)
+	Repos := repository.NewRepository(dbConn)
+	Services := service.NewService(Repos)
+	Handlers := handler.NewHandler(Services)
 
-	router := chi.NewRouter()
-
-	router.Use(middleware.RequestID)
-	router.Use(middleware.Logger)
-	router.Use(middleware.Recoverer)
-	router.Use(middleware.URLFormat)
-
-	router.Post("/users/signup", userHandler.SignUp)
+	srv := new(config.Server)
+	if err := srv.Run(cfg.App.Port, Handlers.InitRoutes()); err != nil {
+		slog.Error("Fatal error in server startup :", err)
+		os.Exit(1)
+	}
 
 	//logger.Info("Initializing server", slog.String("address,", cfg.Address))
 	//logg.Debug("logger debug mode enabled")
 
-	http.ListenAndServe(":8080", router)
 }
