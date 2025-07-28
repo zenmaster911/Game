@@ -5,6 +5,10 @@ import (
 	"github.com/zenmaster911/Game/pkg/repository"
 )
 
+type Character interface {
+	Create(userId int, input *model.Character) (int, error)
+}
+
 type Authorization interface {
 	Create(input *model.CreateUser) (*model.User, error)
 	ParseToken(accessToken string) (int, error)
@@ -12,6 +16,7 @@ type Authorization interface {
 }
 type Service struct {
 	Authorization
+	Character
 }
 
 func NewService(repo *repository.Repository) *Service {

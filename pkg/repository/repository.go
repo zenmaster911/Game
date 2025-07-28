@@ -11,12 +11,18 @@ type Authorization interface {
 	GetByUsername(username string) (model.User, error)
 }
 
+type Character interface {
+	Create(userId int, input *model.Character) (int, error)
+}
+
 type Repository struct {
 	Authorization
+	Character
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewUserRepository(db),
+		Character:     NewCharacterPostgres(db),
 	}
 }
