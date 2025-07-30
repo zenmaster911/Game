@@ -36,3 +36,22 @@ func (h *Handler) createChar(w http.ResponseWriter, r *http.Request) {
 		"id": id,
 	})
 }
+
+func (h *Handler) UserChars(w http.ResponseWriter, r *http.Request) {
+	userID, err := getUserId(w, r)
+
+	if err != nil {
+		http.Error(w, "Extracting userID from context error", http.StatusInternalServerError)
+		return
+	}
+
+	chars, err := h.services.UserChars(userID)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("getting users chars list problem: %s", err), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(chars)
+}

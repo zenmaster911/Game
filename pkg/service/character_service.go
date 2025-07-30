@@ -16,3 +16,6 @@ func NewCharacterService(repo repository.Character) *CharacterService {
 func (s *CharacterService) CreateChar(userID int, char *model.Character) (int, error) {
 	return s.repo.CreateChar(userID, char)
 }
+func (s *CharacterService) UserChars(userId int) ([]model.CharacterIntro, error) {
+	return s.repo.UserChars(userId)
+}

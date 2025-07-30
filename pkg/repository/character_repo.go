@@ -43,3 +43,17 @@ func (r *CharacterPostgres) CreateChar(userID int, char *model.Character) (int, 
 	return id, tx.Commit()
 
 }
+
+func (r *CharacterPostgres) UserChars(userId int) ([]model.CharacterIntro, error) {
+
+	var chars []model.CharacterIntro
+
+	query := "SELECT c.nickname, c.class, c.level FROM characters c INNER JOIN users_characters uc on c.id = uc.character_id WHERE uc.user_id = $1"
+
+	err := r.db.Select(&chars, query, userId)
+	if err != nil {
+		return nil, fmt.Errorf("error in selecting chars: %s", err)
+	}
+	return chars, err
+
+}
