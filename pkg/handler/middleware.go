@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -33,9 +32,25 @@ func (h *Handler) userIdentity(next http.Handler) http.Handler {
 			http.Error(w, fmt.Sprintf("parse token error %s", err), http.StatusUnauthorized)
 			return
 		}
-		userId := strconv.Itoa(id)
+		userId := id
 
 		ctx := context.WithValue(r.Context(), userCtx, userId)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
+}
+
+func getUserId(w http.ResponseWriter, r *http.Request) (userID int, err error) {
+	userIDraw := r.Context().Value(userCtx)
+	if userIDraw == nil {
+		http.Error(w, "no User ID in context", http.StatusInternalServerError)
+		return 0, fmt.Errorf("no user with current ID found")
+	}
+
+	userID, ok := userIDraw.(int)
+	if !ok {
+		http.Error(w, fmt.Sprintf("wrong type of user ID in context %d", userID), http.StatusInternalServerError)
+		return 0, fmt.Errorf("wrong type of user ID in context")
+	}
+
+	return userID, nil
 }

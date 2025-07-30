@@ -28,7 +28,7 @@ func (h *Handler) InitRoutes() *chi.Mux {
 	router.Route("/api", func(r chi.Router) {
 		r.Use(h.userIdentity)
 		r.Route("/chars", func(r chi.Router) {
-
+			r.Post("/", h.createChar)
 		})
 
 	})

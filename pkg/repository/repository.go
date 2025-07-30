@@ -12,7 +12,7 @@ type Authorization interface {
 }
 
 type Character interface {
-	Create(userId int, input *model.Character) (int, error)
+	CreateChar(userId int, char *model.Character) (int, error)
 }
 
 type Repository struct {

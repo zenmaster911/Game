@@ -31,7 +31,7 @@ func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := h.services.Create(&input)
+	user, err := h.services.Authorization.Create(&input)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

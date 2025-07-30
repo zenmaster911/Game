@@ -6,7 +6,7 @@ import (
 )
 
 type Character interface {
-	Create(userId int, input *model.Character) (int, error)
+	CreateChar(userId int, char *model.Character) (int, error)
 }
 
 type Authorization interface {
@@ -22,5 +22,6 @@ type Service struct {
 func NewService(repo *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewUserService(repo.Authorization),
+		Character:     NewCharacterService(repo.Character),
 	}
 }
