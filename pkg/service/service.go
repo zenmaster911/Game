@@ -10,6 +10,7 @@ type Character interface {
 	UserChars(userId int) ([]model.CharacterIntro, error)
 	DeleteCharByNickname(userId int, charNickname string) error
 	GetByNickname(nickname string) (model.Character, error)
+	GetCharById(userId, charId int) (model.Character, error)
 }
 
 type Authorization interface {

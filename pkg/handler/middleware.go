@@ -4,7 +4,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
+
+	"github.com/go-chi/chi/v5"
 )
 
 const (
@@ -53,4 +56,14 @@ func getUserId(w http.ResponseWriter, r *http.Request) (userID int, err error) {
 	}
 
 	return userID, nil
+}
+
+func getCharId(w http.ResponseWriter, r *http.Request) (charID int, err error) {
+	param := chi.URLParam(r, "id")
+
+	charID, err = strconv.Atoi(param)
+	if err != nil {
+		return 0, fmt.Errorf("error in geting character id: %s", err)
+	}
+	return charID, nil
 }

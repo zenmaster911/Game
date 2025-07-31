@@ -27,3 +27,7 @@ func (s *CharacterService) DeleteCharByNickname(userId int, charNickname string)
 func (s *CharacterService) GetByNickname(nickname string) (model.Character, error) {
 	return s.repo.GetByNickname(nickname)
 }
+
+func (s *CharacterService) GetCharById(userId, charId int) (model.Character, error) {
+	return s.repo.GetCharById(userId, charId)
+}

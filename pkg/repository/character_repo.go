@@ -64,9 +64,6 @@ func (r *CharacterPostgres) DeleteCharByNickname(userId int, charNickname string
 
 	_, err := r.db.Exec(query, charNickname, userId)
 
-	if err != nil {
-		fmt.Println(err)
-	}
 	return err
 }
 
@@ -74,4 +71,13 @@ func (r *CharacterPostgres) GetByNickname(nickname string) (model.Character, err
 	var char model.Character
 	err := r.db.Get(&char, "SELECT * FROM characters WHERE nickname=$1", nickname)
 	return char, err
+}
+
+func (r *CharacterPostgres) GetCharById(userId, charId int) (model.Character, error) {
+	var char model.Character
+	err := r.db.Get(&char, "SELECT * FROM characters c WHERE c.id=$1 AND c.user_id=$2", charId, userId)
+	if err != nil {
+		return char, fmt.Errorf("error in get by char id: %s", err)
+	}
+	return char, nil
 }

@@ -80,3 +80,25 @@ func (h *Handler) DeleteCharByNickname(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 
 }
+
+func (h *Handler) GetCharById(w http.ResponseWriter, r *http.Request) {
+
+	UserId, err := getUserId(w, r)
+	if err != nil {
+		http.Error(w, "extracting userID from context error", http.StatusInternalServerError)
+		return
+	}
+
+	CharID, err := getCharId(w, r)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("extracting character ID error: %s", err), http.StatusInternalServerError)
+	}
+
+	char, err := h.services.Character.GetCharById(UserId, CharID)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("error in getting char id: %s", err), http.StatusInternalServerError)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(char)
+}

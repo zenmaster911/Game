@@ -16,6 +16,7 @@ type Character interface {
 	UserChars(userId int) ([]model.CharacterIntro, error)
 	GetByNickname(nickname string) (model.Character, error)
 	DeleteCharByNickname(userId int, charNickname string) error
+	GetCharById(userId, charId int) (model.Character, error)
 }
 
 type Repository struct {
