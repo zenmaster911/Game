@@ -17,6 +17,7 @@ func (h *Handler) createChar(w http.ResponseWriter, r *http.Request) {
 	var input model.Character
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
 	}
 
 	if err := validate.Struct(input); err != nil {
@@ -54,4 +55,50 @@ func (h *Handler) UserChars(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(chars)
+}
+
+func (h *Handler) DeleteCharByNickname(w http.ResponseWriter, r *http.Request) {
+	UserID, err := getUserId(w, r)
+	if err != nil {
+		http.Error(w, "Extracting userID from context error", http.StatusInternalServerError)
+		return
+	}
+	type deleteNickname struct {
+		DeleteNickname string `json:"delete_nickname"`
+	}
+	var nickname deleteNickname
+	if err := json.NewDecoder(r.Body).Decode(&nickname); err != nil {
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	input, err := h.services.GetByNickname(nickname.DeleteNickname)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("get by nickname func error: %s", err), http.StatusInternalServerError)
+		return
+	}
+	h.services.DeleteCharByNickname(UserID, input.ID)
+	w.WriteHeader(http.StatusNoContent)
+
+}
+
+func (h *Handler) CharacterDestroyer(w http.ResponseWriter, r *http.Request) {
+	UserID, err := getUserId(w, r)
+	if err != nil {
+		http.Error(w, "Extracting userID from context error", http.StatusInternalServerError)
+		return
+	}
+	type deleteNickname struct {
+		DeleteNickname string `json:"delete_nickname"`
+	}
+	var nickname deleteNickname
+	if err := json.NewDecoder(r.Body).Decode(&nickname); err != nil {
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return
+	}
+	if err := h.services.Character.CharacterDestroyer(UserID, nickname.DeleteNickname); err != nil {
+		http.Error(w, fmt.Sprintf("get character destruction failed: %s", err), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
 }

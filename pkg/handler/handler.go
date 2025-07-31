@@ -30,6 +30,7 @@ func (h *Handler) InitRoutes() *chi.Mux {
 		r.Route("/chars", func(r chi.Router) {
 			r.Post("/", h.createChar)
 			r.Get("/", h.UserChars)
+			r.Delete("/", h.CharacterDestroyer)
 		})
 
 	})

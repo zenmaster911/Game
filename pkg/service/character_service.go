@@ -19,3 +19,15 @@ func (s *CharacterService) CreateChar(userID int, char *model.Character) (int, e
 func (s *CharacterService) UserChars(userId int) ([]model.CharacterIntro, error) {
 	return s.repo.UserChars(userId)
 }
+
+func (s *CharacterService) DeleteCharByNickname(userId, charId int) error {
+	return s.repo.DeleteCharByNickname(userId, charId)
+}
+
+func (s *CharacterService) GetByNickname(nickname string) (model.Character, error) {
+	return s.repo.GetByNickname(nickname)
+}
+
+func (s *CharacterService) CharacterDestroyer(userId int, charNickname string) error {
+	return s.repo.CharacterDestroyer(userId, charNickname)
+}

@@ -21,8 +21,8 @@ type Character struct {
 	Health       int            `json:"health" db:"health"`
 	Strength     int            `json:"strength" db:"strength"`
 	Agility      int            `json:"agility" db:"agility"`
-	Charisma     int            `json:"charisma" db:"agility"`
-	Intelligence int            `json:"intelligence" db:"agility"`
+	Charisma     int            `json:"charisma" db:"charisma"`
+	Intelligence int            `json:"intelligence" db:"intelligence"`
 	CreatedTime  time.Time      `json:"created_time" db:"created_time"`
 }
 
