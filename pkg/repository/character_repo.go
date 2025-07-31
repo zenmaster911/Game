@@ -58,24 +58,12 @@ func (r *CharacterPostgres) UserChars(userId int) ([]model.CharacterIntro, error
 
 }
 
-func (r *CharacterPostgres) CharacterDestroyer(userId int, charNickname string) error {
+func (r *CharacterPostgres) DeleteCharByNickname(userId int, charNickname string) error {
 
 	query := "DELETE FROM characters c WHERE c.nickname = $1 AND c.user_id = $2"
 
 	_, err := r.db.Exec(query, charNickname, userId)
 
-	if err != nil {
-		fmt.Println(err)
-	}
-	return err
-}
-
-func (r *CharacterPostgres) DeleteCharByNickname(userId, charID int) error {
-
-	query := "DELETE FROM characters c USING users_characters uc WHERE c.id = uc.character_id AND c.id = $1 AND uc.user_id = $2"
-
-	_, err := r.db.Exec(query, charID, userId)
-	fmt.Println(userId, charID)
 	if err != nil {
 		fmt.Println(err)
 	}

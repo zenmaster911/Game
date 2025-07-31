@@ -8,9 +8,8 @@ import (
 type Character interface {
 	CreateChar(userId int, char *model.Character) (int, error)
 	UserChars(userId int) ([]model.CharacterIntro, error)
-	DeleteCharByNickname(userId, charId int) error
+	DeleteCharByNickname(userId int, charNickname string) error
 	GetByNickname(nickname string) (model.Character, error)
-	CharacterDestroyer(userId int, charNickname string) error
 }
 
 type Authorization interface {

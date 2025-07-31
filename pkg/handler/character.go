@@ -72,33 +72,11 @@ func (h *Handler) DeleteCharByNickname(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	input, err := h.services.GetByNickname(nickname.DeleteNickname)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("get by nickname func error: %s", err), http.StatusInternalServerError)
-		return
-	}
-	h.services.DeleteCharByNickname(UserID, input.ID)
-	w.WriteHeader(http.StatusNoContent)
-
-}
-
-func (h *Handler) CharacterDestroyer(w http.ResponseWriter, r *http.Request) {
-	UserID, err := getUserId(w, r)
-	if err != nil {
-		http.Error(w, "Extracting userID from context error", http.StatusInternalServerError)
-		return
-	}
-	type deleteNickname struct {
-		DeleteNickname string `json:"delete_nickname"`
-	}
-	var nickname deleteNickname
-	if err := json.NewDecoder(r.Body).Decode(&nickname); err != nil {
-		http.Error(w, "invalid request body", http.StatusBadRequest)
-		return
-	}
-	if err := h.services.Character.CharacterDestroyer(UserID, nickname.DeleteNickname); err != nil {
+	if err := h.services.Character.DeleteCharByNickname(UserID, nickname.DeleteNickname); err != nil {
 		http.Error(w, fmt.Sprintf("get character destruction failed: %s", err), http.StatusInternalServerError)
 		return
 	}
+	fmt.Println(UserID, nickname.DeleteNickname)
 	w.WriteHeader(http.StatusNoContent)
+
 }
