@@ -81,3 +81,11 @@ func (r *CharacterPostgres) GetCharById(userId, charId int) (model.Character, er
 	}
 	return char, nil
 }
+
+func (r *CharacterPostgres) DeleteCharById(userId, charId int) error {
+	_, err := r.db.Exec("DELETE FROM characters c WHERE c.id=$1 AND c.user_id=$2", charId, userId)
+	if err != nil {
+		return fmt.Errorf("delete char by id error: %s", err)
+	}
+	return nil
+}

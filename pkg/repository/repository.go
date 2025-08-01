@@ -17,11 +17,16 @@ type Character interface {
 	GetByNickname(nickname string) (model.Character, error)
 	DeleteCharByNickname(userId int, charNickname string) error
 	GetCharById(userId, charId int) (model.Character, error)
+	DeleteCharById(userId, charId int) error
 }
 
+type Skill interface {
+	CreateSkill(skill *model.Skill) error
+}
 type Repository struct {
 	Authorization
 	Character
+	Skill
 }
 
 func NewRepository(db *sqlx.DB) *Repository {

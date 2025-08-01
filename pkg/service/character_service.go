@@ -31,3 +31,7 @@ func (s *CharacterService) GetByNickname(nickname string) (model.Character, erro
 func (s *CharacterService) GetCharById(userId, charId int) (model.Character, error) {
 	return s.repo.GetCharById(userId, charId)
 }
+
+func (s *CharacterService) DeleteCharById(userId, charId int) error {
+	return s.repo.DeleteCharById(userId, charId)
+}

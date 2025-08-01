@@ -31,8 +31,11 @@ func (h *Handler) InitRoutes() *chi.Mux {
 			r.Post("/", h.createChar)
 			r.Get("/", h.UserChars)
 			r.Delete("/", h.DeleteCharByNickname)
-			//r.Get("/{id}", h.DeleteById)
+			r.Get("/{id}", h.DeleteCharById)
 			r.Get("/{id}", h.GetCharById)
+		})
+		r.Route("/skills", func(r chi.Router) {
+			r.Post("/", h.CreateSkill)
 		})
 
 	})

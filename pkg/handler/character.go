@@ -76,7 +76,6 @@ func (h *Handler) DeleteCharByNickname(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("get character destruction failed: %s", err), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(UserID, nickname.DeleteNickname)
 	w.WriteHeader(http.StatusNoContent)
 
 }
@@ -101,4 +100,25 @@ func (h *Handler) GetCharById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(char)
+}
+
+func (h *Handler) DeleteCharById(w http.ResponseWriter, r *http.Request) {
+	UserID, err := getUserId(w, r)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("extracting character ID error: %s", err), http.StatusInternalServerError)
+		return
+	}
+
+	CharID, err := getCharId(w, r)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("extracting char ID error: %s", err), http.StatusInternalServerError)
+		return
+	}
+
+	err = h.services.DeleteCharById(UserID, CharID)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("deleting character error: %s", err), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
 }

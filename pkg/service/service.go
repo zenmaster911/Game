@@ -11,6 +11,7 @@ type Character interface {
 	DeleteCharByNickname(userId int, charNickname string) error
 	GetByNickname(nickname string) (model.Character, error)
 	GetCharById(userId, charId int) (model.Character, error)
+	DeleteCharById(userId, charId int) error
 }
 
 type Authorization interface {
@@ -18,14 +19,21 @@ type Authorization interface {
 	ParseToken(accessToken string) (int, error)
 	GenerateToken(username, password string) (string, error)
 }
+
+type Skill interface {
+	CreateSkill(skill *model.Skill) error
+}
+
 type Service struct {
 	Authorization
 	Character
+	Skill
 }
 
 func NewService(repo *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewUserService(repo.Authorization),
 		Character:     NewCharacterService(repo.Character),
+		Skill:         NewSkillService(repo.Skill),
 	}
 }
