@@ -33,5 +33,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewUserRepository(db),
 		Character:     NewCharacterPostgres(db),
+		Skill:         NewSkillPostgres(db),
 	}
 }

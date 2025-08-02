@@ -26,8 +26,8 @@ func (h *Handler) InitRoutes() *chi.Mux {
 		r.Post("/sign-in", h.SignIn)
 	})
 	router.Route("/api", func(r chi.Router) {
-		r.Use(h.userIdentity)
 		r.Route("/chars", func(r chi.Router) {
+			r.Use(h.userIdentity)
 			r.Post("/", h.createChar)
 			r.Get("/", h.UserChars)
 			r.Delete("/", h.DeleteCharByNickname)

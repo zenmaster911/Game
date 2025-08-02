@@ -16,12 +16,13 @@ func NewSkillPostgres(db *sqlx.DB) *SkillsPostgres {
 }
 
 func (r *SkillsPostgres) CreateSkill(skill *model.Skill) error {
-	query := `INSERT INTO skills (name, description,skill_type,efect,required_level,required_class)
-	VALUES ( :name, :description,:skill_type,:efect,:required_level,:required_class)
+	query := `INSERT INTO skills (name, description,skill_type,effect,required_level,required_class)
+	VALUES ( :name, :description,:skill_type,:effect,:required_level,:required_class)
 	RETURNING id`
 	_, err := r.db.NamedExec(query, skill)
 	if err != nil {
 		return fmt.Errorf("error in creating skill: %s", err)
 	}
+	fmt.Println(1)
 	return nil
 }

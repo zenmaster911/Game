@@ -14,7 +14,7 @@ func (h *Handler) CreateSkill(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 	}
-
+	//fmt.Println(input)
 	if err := validate.Struct(input); err != nil {
 		sendValidationErrors(w, err)
 		return
@@ -22,10 +22,10 @@ func (h *Handler) CreateSkill(w http.ResponseWriter, r *http.Request) {
 
 	err := h.services.Skill.CreateSkill(&input)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error occured in cskill creationn: %s", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error occured in skill creationn: %s", err), http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("content_type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(input)
 }
